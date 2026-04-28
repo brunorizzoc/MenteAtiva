@@ -1048,7 +1048,10 @@ export default function App() {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      alert('O aplicativo já está instalado ou seu navegador atual não suporta a instalação direta por este botão. Você pode usar a opção "Adicionar à Tela de Início" no menu do seu navegador.');
+      return;
+    }
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
@@ -1273,14 +1276,6 @@ export default function App() {
                 </form>
 
                 <div className="mt-8 pt-6 border-t-2 border-brand-divider grid grid-cols-1 gap-3">
-                  {deferredPrompt && (
-                    <button 
-                      onClick={handleInstallClick}
-                      className="flex items-center justify-center gap-3 w-full py-4 bg-blue-600 text-white font-black text-xs uppercase tracking-wider hover:bg-blue-700 rounded-2xl transition-all shadow-lg active:scale-95"
-                    >
-                      <Download className="w-5 h-5" /> Instalar App no Celular
-                    </button>
-                  )}
                   <button 
                     onClick={() => fileInputRef.current?.click()}
                     className="flex items-center justify-center gap-3 w-full py-4 text-blue-500 font-black text-xs uppercase tracking-wider hover:bg-blue-500/5 rounded-2xl transition-all border-2 border-transparent"
@@ -1292,6 +1287,13 @@ export default function App() {
                     className="flex items-center justify-center gap-3 w-full py-4 bg-emerald-500 text-white font-black text-xs uppercase tracking-wider hover:bg-emerald-600 rounded-2xl transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
                   >
                     <Search className="w-5 h-5" /> Como Funciona?
+                  </button>
+
+                  <button 
+                    onClick={handleInstallClick}
+                    className="flex items-center justify-center gap-3 w-full py-4 bg-amber-500 text-black font-black text-xs uppercase tracking-wider hover:bg-amber-600 rounded-2xl transition-all shadow-lg shadow-amber-500/20 active:scale-95"
+                  >
+                    <Download className="w-5 h-5" /> Instalar App
                   </button>
                 </div>
               </div>
@@ -1503,7 +1505,7 @@ export default function App() {
       </main>
 
       {/* Navigation */}
-      {!isFullScreen && (
+      {!isFullScreen && activeScreen !== 'faq' && (
         <footer className="fixed bottom-4 sm:bottom-10 left-1/2 -translate-x-1/2 w-full max-w-xl px-4 sm:px-6 flex justify-between items-center gap-3 sm:gap-6 z-40">
           <div className="flex flex-1 gap-2 sm:gap-4 bg-card-bg/90 backdrop-blur-2xl p-2 sm:p-4 rounded-[32px] sm:rounded-[40px] shadow-3xl border-2 border-brand-divider">
             <button 
