@@ -1317,9 +1317,9 @@ export default function App() {
                   {!isInstalled && (
                     <button 
                       onClick={handleInstallClick}
-                      className="flex items-center justify-center gap-3 w-full py-4 bg-amber-500 text-black font-black text-xs uppercase tracking-wider hover:bg-amber-600 rounded-2xl transition-all shadow-lg shadow-amber-500/20 active:scale-95 animate-pulse-slow"
+                      className="flex items-center justify-center gap-3 w-full py-4 bg-brand-blue text-white font-black text-xs uppercase tracking-wider hover:bg-blue-600 rounded-2xl transition-all shadow-lg shadow-blue-500/20 active:scale-95 animate-pulse-slow"
                     >
-                      <Download className="w-5 h-5" /> Instalar App (PWA)
+                      <Brain className="w-5 h-5" /> Instalar App (PWA)
                     </button>
                   )}
                 </div>
