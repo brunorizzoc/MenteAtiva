@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --color-brand-blue: #3B82F6;
+  --color-brand-green: #10B981;
+  --color-brand-yellow: #FBBF24;
+  --color-brand-orange: #F97316;
+  --color-brand-purple: #8B5CF6;
+  --color-brand-beige: var(--bg-color);
+  --color-brand-dark: var(--text-color);
+  --color-brand-divider: var(--border-color);
+  --color-card-bg: var(--card-bg);
+}
+
+:root {
+  --bg-color: #F5F0E8;
+  --text-color: #1E1B1A;
+  --card-bg: #FFFFFF;
+  --border-color: #EAE4D9;
+}
+
+[data-theme='escuro'] {
+  --bg-color: #121212;
+  --text-color: #F5F0E8;
+  --card-bg: #1E1E1E;
+  --border-color: #333333;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.large-text {
+  font-size: 1.25rem;
+}
+
+.btn-large {
+  min-height: 60px;
+  min-width: 120px;
+}
+
+.tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
