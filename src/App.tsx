@@ -1036,26 +1036,51 @@ export default function App() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [tempName, setTempName] = useState('');
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstalled, setIsInstalled] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone) {
+      setIsInstalled(true);
+    }
+
     const handler = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };
     window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
+    
+    const installedHandler = () => {
+      setIsInstalled(true);
+      setDeferredPrompt(null);
+    };
+    window.addEventListener('appinstalled', installedHandler);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+      window.removeEventListener('appinstalled', installedHandler);
+    };
   }, []);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) {
-      alert('O aplicativo já está instalado ou seu navegador atual não suporta a instalação direta por este botão. Você pode usar a opção "Adicionar à Tela de Início" no menu do seu navegador.');
+      if (isInstalled) {
+        alert('O aplicativo já está instalado!');
+      } else {
+        alert('Para instalar este app:\n\n1. No Chrome: Clique nos três pontinhos ⋮ e depois em "Instalar Aplicativo".\n2. No Safari (iOS): Toque no botão Compartilhar ⎙ e escolha "Adicionar à Tela de Início".');
+      }
       return;
     }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setDeferredPrompt(null);
+    try {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+        setIsInstalled(true);
+      }
+    } catch (error) {
+      console.error('Erro na instalação:', error);
     }
   };
 
@@ -1289,12 +1314,14 @@ export default function App() {
                     <Search className="w-5 h-5" /> Como Funciona?
                   </button>
 
-                  <button 
-                    onClick={handleInstallClick}
-                    className="flex items-center justify-center gap-3 w-full py-4 bg-amber-500 text-black font-black text-xs uppercase tracking-wider hover:bg-amber-600 rounded-2xl transition-all shadow-lg shadow-amber-500/20 active:scale-95"
-                  >
-                    <Download className="w-5 h-5" /> Instalar App
-                  </button>
+                  {!isInstalled && (
+                    <button 
+                      onClick={handleInstallClick}
+                      className="flex items-center justify-center gap-3 w-full py-4 bg-amber-500 text-black font-black text-xs uppercase tracking-wider hover:bg-amber-600 rounded-2xl transition-all shadow-lg shadow-amber-500/20 active:scale-95 animate-pulse-slow"
+                    >
+                      <Download className="w-5 h-5" /> Instalar App (PWA)
+                    </button>
+                  )}
                 </div>
               </div>
               
@@ -1505,7 +1532,7 @@ export default function App() {
       </main>
 
       {/* Navigation */}
-      {!isFullScreen && activeScreen !== 'faq' && (
+      {!isFullScreen && !['intro', 'faq'].includes(activeScreen) && (
         <footer className="fixed bottom-4 sm:bottom-10 left-1/2 -translate-x-1/2 w-full max-w-xl px-4 sm:px-6 flex justify-between items-center gap-3 sm:gap-6 z-40">
           <div className="flex flex-1 gap-2 sm:gap-4 bg-card-bg/90 backdrop-blur-2xl p-2 sm:p-4 rounded-[32px] sm:rounded-[40px] shadow-3xl border-2 border-brand-divider">
             <button 

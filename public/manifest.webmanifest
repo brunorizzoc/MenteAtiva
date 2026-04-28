@@ -1,0 +1,17 @@
+{
+  "name": "Mente Ativa",
+  "short_name": "MenteAtiva",
+  "description": "Plataforma de estimulação cognitiva e motora para idosos.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F0E8",
+  "theme_color": "#3B82F6",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3079/3079207.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
